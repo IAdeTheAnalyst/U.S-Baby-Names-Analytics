@@ -28,13 +28,3 @@ Tables used:
 - **`regions`** — `state`, `region` (e.g., New England, Midwest, South, West, etc.)
 
 > Note: Michigan (`MI`) is standardized to the **Midwest**. “New England” is normalized to `New_England` for consistent labeling.
-
-## 🚀 Quick Start
-1. Import CSVs into MySQL (Workbench → *Table Data Import Wizard*) or via `LOAD DATA INFILE`.
-2. Ensure **MySQL 8+** (CTEs & window functions required).
-3. (Optional) Add helpful indexes:
-   ```sql
-   CREATE INDEX idx_names_year_gender ON names(year, gender);
-   CREATE INDEX idx_names_state ON names(state);
-   CREATE INDEX idx_names_name_year ON names(name, year);
-   CREATE INDEX idx_regions_state ON regions(state);
