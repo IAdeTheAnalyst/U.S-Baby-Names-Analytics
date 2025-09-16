@@ -1,0 +1,219 @@
+-- OBJECTIVE 1: TRACK CHANGES IN POPULARITY 
+
+-- 1.  Find the overall most popular girl name and most popular boy name. 
+-- show how they have changed in popularity rankings over the years.
+/*
+select 
+	name,
+    sum(births) as num_births
+from names 
+where gender =  'F'
+group by name
+order by num_births desc 
+limit 1 
+*/
+/*select 
+	name,
+    sum(births) as num_births
+from names 
+where gender =  'M'
+group by name
+order by num_births desc 
+limit 1 
+*/
+/*
+select 
+	year,
+    name,
+    sum(births) as popularity ,
+    row_number() over(order by sum(births) desc) as ranking 
+from names
+where name = 'Jessica'
+group by year,name
+*/
+/*
+select * 
+from 
+(with girl_names as (
+ select 
+	year,
+    name,
+    sum(births) as num_babies 
+from names
+where gender = 'F'
+group by year,name
+)
+select 
+	year, 
+    name, 
+    row_number() over (partition by year order by num_babies desc) as popularity
+from girl_names
+) as girl_ranking
+where name =  'Jessica'
+*/
+ /*
+select * 
+from 
+(with boy_names as (
+ select 
+	year,
+    name,
+    sum(births) as num_babies 
+from names
+where gender = 'M'
+group by year,name
+)
+select 
+	year, 
+    name, 
+    row_number() over (partition by year order by num_babies desc) as popularity
+from boy_names
+) as boy_ranking
+where name =  'Michael'
+*/
+
+-- 2. Find the names with the biggest jumps in popularity from the first year and last year
+/*
+with all_names as ( 
+select 
+	year, 
+    name, 
+	sum(births) as num_babies
+from names
+group by year, name 
+),
+names_1980 as (
+select 
+	year, 
+    name, 
+    row_number() over (partition by year order by num_babies desc) as popularity
+from all_names
+where year = 1980
+),
+
+names_2009 as (
+select 
+	year, 
+    name, 
+    row_number() over (partition by year order by num_babies desc) as popularity
+from all_names
+where year = 2009
+)
+select *
+from names_1980 a
+inner join names_2009 b
+on a.name = b.name
+*/
+-- OBJECTIVE 2: Compare popularity across decades 
+-- For each year, return the 3 most popular girl names and 3 most popular boy names 
+/* 
+with base_rank as (
+select 
+	year, 
+    name,
+    gender,
+    sum(births) as num_babies,
+    row_number() over(partition by year,gender order by sum(births) desc) as popularity 
+from names 
+group by year, name, gender
+),
+ranked as ( 
+select 
+	year,
+    name,
+    gender,
+    num_babies,
+    popularity 
+from base_rank
+where popularity <= 3
+)
+Select *
+from ranked 
+*/
+
+
+
+-- For each decade, return the 3 most popular girl names and 3 most popular boy names 
+/*
+with base_rank as (
+select 
+    name,
+    gender,
+    sum(births) as num_babies,
+	case
+    when year between 1980 and 1989 then '80'
+    when year between 1990 and 1999 then '90'
+    when year between 2000 and 2010 then '2000'
+else null 
+end as decade
+from names 
+group by name, gender, decade
+),
+ranked as ( 
+select 
+    decade,
+    name,
+    gender,
+    row_number() over(partition by decade,gender order by num_babies desc) as popularity
+from base_rank
+group by decade, gender,num_babies, name 
+)
+select *
+from ranked
+where popularity <=3 
+*/
+--  OBJECTIVE 3: COMPARE POPULARITY ACROSS REGIONS 	
+-- Return the number of babies born in each of the six regions (NOTE: The state of MI should be in the Midwest region)
+/*
+with clean_regions as(
+select 
+	state,
+	case when region = 'New England' then 'New_England' else region end as clean_region
+from regions
+union 
+select 'MI' as state, 'Midwest' as region)
+
+select 
+	b.clean_region,
+    sum(births) as num_babies
+from names a
+	left join  clean_regions b 
+		on a.state = b.state
+group by b.clean_region
+*/
+
+-- Return the 3 most popular girl names and 3 most popular boy names within each region
+/*
+with clean_regions as(
+select 
+	state,
+	case when region = 'New England' then 'New_England' else region end as clean_region
+from regions
+union 
+select 'MI' as state, 'Midwest' as region
+),
+base_ranking as(
+select distinct 
+	name,
+    gender,
+    state,
+    sum(births) as num_births,
+    row_number() over (partition by state,gender order by sum(births) desc ) as popularity
+from names 
+group by name, gender, state
+)
+select 
+	clean_region,
+    name,
+    gender,
+    popularity
+from base_ranking a
+inner join clean_regions b
+on a.state = b.state
+where popularity <= 3
+*/
+
+
+
+
+
