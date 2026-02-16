@@ -1,8 +1,12 @@
-# 👶 Baby Names Analytics — MySQL Data Analysis
+# Baby Names Analytics — MySQL Data Analysis
 
-This project explores historical trends in U.S. baby names using the Social Security dataset. By analyzing naming patterns across years, states, regions, and genders in **MySQL 8 (Workbench)**, the project uncovers cultural influences, shifts in popularity, and long-term demographic trends.
+In this project, I analyzed historical U.S. baby name data from the Social Security Administration using MySQL 8 (Workbench). My goal was to identify long-term naming trends, regional differences, and shifts in popularity over time by applying advanced SQL techniques to a large, multi-decade dataset.
 
-## 🧠 Key Business Questions
+Through structured querying and data transformation, I uncovered patterns that reflect cultural influences, demographic shifts, and evolving naming preferences across states, regions, and genders.
+
+## Project Objectives
+In this analysis, I aimed to answer the following business questions:
+
 1. What are the top 10 most popular baby names for boys and girls in each year?
 2. How have naming trends changed over decades, and which names stayed consistently popular?
 3. Which states or regions share similar naming patterns, and where do differences stand out?
@@ -13,7 +17,9 @@ This project explores historical trends in U.S. baby names using the Social Secu
 8. How does popularity differ across regions (e.g., New England vs. South vs. West)?
 9. Which states drive the most births for the most popular names?
 
-## 📊 Tools Used
+## Tools & Technical Approach
+In this project, I used:
+
 - **SQL (MySQL 8+)** with **MySQL Workbench**
 - **Common Table Expressions (CTEs)**
 - **Aggregate Functions (SUM, COUNT, AVG)**
@@ -22,9 +28,27 @@ This project explores historical trends in U.S. baby names using the Social Secu
 - **Window Functions** (`ROW_NUMBER`, `RANK`, `DENSE_RANK`)
 - **Data Cleaning/Standardization** (region normalization, state mapping)
 
-## 📂 Dataset Overview
-Tables used:
-- **`names`** — `year`, `state`, `name`, `gender`, `births`
-- **`regions`** — `state`, `region` (e.g., New England, Midwest, South, West, etc.)
+## What I Learned
+Through this project, I strengthened my ability to:
 
-> Note: Michigan (`MI`) is standardized to the **Midwest**. “New England” is normalized to `New_England` for consistent labeling.
+- Use window functions to rank and compare entities over time
+- Structure complex queries using CTEs for clarity and scalability
+- Translate raw data into meaningful business insights
+- Identify long-term trend stability versus short-term volatility
+- Analyze geographic segmentation and its impact on popularity patterns
+
+I also gained a deeper understanding of how cultural and regional factors influence measurable demographic outcomes.
+
+## Challenges I Encountered
+One challenge I faced was managing performance when ranking names across many years and states. I addressed this by restructuring queries using CTEs and optimizing aggregation logic.
+
+Another challenge involved cleaning and standardizing region classifications to ensure consistent geographic comparisons. This required careful validation and normalization of state-to-region mappings.
+
+Additionally, interpreting trend volatility required thoughtful query design to distinguish between short-term spikes and sustained popularity.
+
+## Dataset Overview
+The primary table used in this project was:
+
+- names-> containing year, state, name, gender, and births
+
+This dataset enabled longitudinal and regional analysis across multiple decades of U.S. naming history.
