@@ -51,4 +51,4 @@ The primary table used in this project was:
 
 - names-> containing year, state, name, gender, and births
 
-This dataset enabled longitudinal and regional analysis across multiple decades of U.S. naming history.
+
